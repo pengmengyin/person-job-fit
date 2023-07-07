@@ -1,0 +1,22 @@
+{
+  "0": "<pad>",
+  "1": "B-NAME",
+  "2": "E-NAME",
+  "3": "O",
+  "4": "B-BIRTHDAY",
+  "5": "M-BIRTHDAY",
+  "6": "E-BIRTHDAY",
+  "7": "B-SCHOOL",
+  "8": "M-SCHOOL",
+  "9": "E-SCHOOL",
+  "10": "B-EDUCATION",
+  "11": "E-EDUCATION",
+  "12": "B-YEARSOFWORK",
+  "13": "M-YEARSOFWORK",
+  "14": "E-YEARSOFWORK",
+  "15": "B-AGE",
+  "16": "E-AGE",
+  "17": "M-NAME",
+  "18": "M-AGE",
+  "19": "M-EDUCATION"
+}

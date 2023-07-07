@@ -1,0 +1,12 @@
+{
+  "httpserver": {
+    "httpPoolNumber": 10,
+    "httpMaxConn": 200,
+    "port": 10001,
+    "host": "0.0.0.0"
+  },
+  "log": {
+    "filename": "log",
+    "dir": "./log"
+  }
+}
