@@ -6,7 +6,7 @@
     "host": "0.0.0.0"
   },
   "log": {
-    "filename": "log",
+    "filename": "log.txt",
     "dir": "./log"
   }
 }

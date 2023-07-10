@@ -1,21 +1,14 @@
-import pythoncom
-import argparse
-from utils.postprocessing import post_processing
 import PyPDF2
 import numpy as np
 import pythoncom
 import torch
 from docx2pdf import convert
-import logging
+import win32com.client
 import os
-from torch.utils.data import DataLoader
 from transformers import AutoTokenizer
 from ecloud import CMSSEcloudOcrClient
 import json
-from flask import Flask, jsonify, request
-from flask_cors import CORS
-from ner import data_loader, models
-from ner.inference import Predictor
+from ner import data_loader
 accesskey = 'c9f9e00293c247649c92e7b00be8fa47'
 secretkey = '9ae7550615734b2c80b16434a24ced84'
 url = 'https://api-wuxi-1.cmecloud.cn:8443'
@@ -39,7 +32,7 @@ def request_webimage_file(imagepath):
     return string
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in {'jpg', 'jpeg', 'png', 'gif', 'pdf', 'docx', 'txt'}
+           filename.rsplit('.', 1)[1].lower() in {'jpg', 'jpeg', 'png', 'gif','doc', 'pdf', 'docx', 'txt'}
 def ner(text,predictor,args):
     tokenizer = AutoTokenizer.from_pretrained(args.bert_name, cache_dir="./ner/cache/")
     vocab = data_loader.Vocabulary()
@@ -132,6 +125,37 @@ def docx2text(folder_path):
         convert(folder_path, './images')
         str = str + pdf2text(new_file_name)
         str = str + os.linesep+ os.linesep
+        print(str)
+    except Exception as e:
+        print(e)
+    return str
+
+def doc2text(folder_path):
+    pythoncom.CoInitialize()
+    str = ''
+    try:
+        new_file_name = folder_path.replace("doc", "pdf")
+        # 将 DOCX 文件转换为 PDF 文件，并保存到与 DOCX 文件相同的路径下
+
+        wdFormatPDF = 17  # PDF文档的文件格式常量
+        doc_file = folder_path  # 要转换的DOC文件路径
+        pdf_file = new_file_name  # 转换后的PDF文件路径
+
+        # 创建Word应用程序
+        word = win32com.client.Dispatch('Word.Application')
+        # 打开DOC文件
+        doc = word.Documents.Open(doc_file)
+        # 将DOC文件保存为PDF文件
+        doc.SaveAs(pdf_file, FileFormat=wdFormatPDF)
+        # 关闭DOC文件
+        doc.Close()
+        # 退出Word应用程序
+        word.Quit()
+
+
+        str = str + pdf2text(new_file_name)
+        str = str + os.linesep+ os.linesep
+        print(str)
     except Exception as e:
         print(e)
     return str
